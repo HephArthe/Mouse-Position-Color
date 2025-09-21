@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Gma.System.MouseKeyHook;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Gma.System.MouseKeyHook;
 
 namespace MousePosition
 {
@@ -41,6 +42,15 @@ namespace MousePosition
             this.FormBorderStyle = FormBorderStyle.None;
             this.ShowInTaskbar = false;
             this.Hide();
+
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, 30, 30, 180, 90);
+            path.AddArc(this.Width - 30, 0, 30, 30, 270, 90);
+            path.AddArc(this.Width - 30, this.Height - 30, 30, 30, 0, 90);
+            path.AddArc(0, this.Height - 30, 30, 30, 90, 90);
+            path.CloseAllFigures();
+
+            this.Region = new Region(path);
 
             trayIcon = new NotifyIcon();
             trayIcon.Icon = SystemIcons.Application;

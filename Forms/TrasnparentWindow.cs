@@ -12,12 +12,9 @@ namespace MousePosition
 {
     public partial class TrasnparentWindow : Form
     {
-        private Form1 _mainWindow;
         public TrasnparentWindow(Form1 mainWindow)
         {
             InitializeComponent();
-
-            _mainWindow = mainWindow;
 
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
