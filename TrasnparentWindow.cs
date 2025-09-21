@@ -22,7 +22,7 @@ namespace MousePosition
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
             this.TopMost = true;
-            this.Opacity = 0.01;
+            this.Opacity = 0.001;
             this.ShowInTaskbar = true;
             this.ContextMenuStrip = null;
 
