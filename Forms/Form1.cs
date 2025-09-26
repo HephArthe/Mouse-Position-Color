@@ -16,9 +16,9 @@ namespace MousePosition
     {
 
         private IKeyboardMouseEvents m_GlobalHook;
-        private TrasnparentWindow overlay;
         private bool isActivate = false;
         private NotifyIcon trayIcon;
+        private List<Form> forms = new List<Form>();
 
         public Form1()
         {
@@ -93,9 +93,7 @@ namespace MousePosition
                         Console.WriteLine("Left Click Detected.");
 
                         Clipboard.SetDataObject(label1.Text);
-                        overlay?.Close();
-                        this.Hide();
-                        isActivate = false;
+                        Deactivate();
                     }
                 }
                 if (e.Button == MouseButtons.Right)
@@ -104,9 +102,7 @@ namespace MousePosition
                     {
                         Console.WriteLine("Right Click Detected.");
                         Clipboard.SetDataObject(label2.Text);
-                        overlay?.Close();
-                        this.Hide();
-                        isActivate = false;
+                        Deactivate();
                     }
                 }
             }
@@ -116,22 +112,16 @@ namespace MousePosition
         {
             if(e.KeyCode == Keys.F10)
             {
-                if(isActivate == false)
+                if(!isActivate)
                 {
-                    overlay = new TrasnparentWindow(this);
-                    overlay.Show();
-                    this.Show();
-                    this.TopMost = true;
-                    isActivate = true;
+                    Activate();
                 }
             }
             if(e.KeyCode == Keys.Escape)
             {
-                if(isActivate == true)
+                if(isActivate)
                 {
-                    overlay?.Close();
-                    this.Hide();
-                    isActivate = false;
+                    Deactivate();
                 }
             }
                 
@@ -145,6 +135,29 @@ namespace MousePosition
                 m_GlobalHook.Dispose();
             }
             base.OnFormClosing(e);
+        }
+
+        private void Activate()
+        {
+            foreach (var screen in Screen.AllScreens)
+            {
+                var overlay = new TrasnparentWindow(screen);
+                overlay.Show();
+                overlay.TopMost = true;
+                forms.Add(overlay);
+            }
+            this.Show();
+            isActivate = true;
+        }
+
+        private void Deactivate()
+        {
+            foreach(var screen in forms)
+            {
+                screen?.Close();
+            }
+                this.Hide();
+                isActivate = false;
         }
     }
 }
